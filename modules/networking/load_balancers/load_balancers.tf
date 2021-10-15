@@ -27,7 +27,11 @@ resource "azurerm_lb" "lb" {
       zones                         = try(frontend_ip_configuration.value.zones, null)
     }
   }
-
+  lifecycle {
+    ignore_changes = [
+      name, resource_group_name, location
+    ]
+  }
   tags = local.tags
 }
 
