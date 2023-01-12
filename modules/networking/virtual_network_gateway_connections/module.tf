@@ -29,7 +29,12 @@ resource "azurerm_virtual_network_gateway_connection" "vngw_connection" {
   routing_weight                     = try(var.settings.routing_weight, null)
   use_policy_based_traffic_selectors = try(var.settings.use_policy_based_traffic_selectors, false) #if set true, IPsec Policy block has to be set
   tags                               = local.tags
-
+  
+  lifecycle {
+     ignore_changes = [
+       express_route_circuit_id
+     ]
+  }
   #Only one IP Sec Policy block per connection
   dynamic "ipsec_policy" {
     for_each = try(var.settings.ipsec_policy, {})
